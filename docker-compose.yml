@@ -15,6 +15,7 @@ services:
       - DB_NAME=dev
     depends_on:
       - mongo
+      - rabbitmq
 
   subscriber:
     image: node:18-alpine
@@ -30,6 +31,7 @@ services:
       - JWT_SECRET=J83NDY5QuFpeurg6bK3112pW1laahA
     depends_on:
       - mongo
+      - rabbitmq
 
   mongo:
     image: mongo:6.0
@@ -47,5 +49,15 @@ services:
       timeout: 10s
       retries: 5
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   mongo-data:
+  rabbitmq_data:
