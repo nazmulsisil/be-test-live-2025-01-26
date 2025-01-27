@@ -2,14 +2,21 @@ import mongoose from "mongoose";
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import User from "./models/User";
+import Profile from "./models/Profile";
 
 const app = express();
 app.use(bodyParser.json());
 
 app.post("/signup", async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const {
+    email,
+    password,
+    //  firstName,
+    //   lastName,
+    //    age
+  } = req.body;
 
-  if (!email) {
+  if (!email || !password) {
     res.status(400).json({ error: "Email is required" });
     return;
   }

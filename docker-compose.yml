@@ -11,10 +11,9 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - MONGO_URI=mongodb://root:pass@mongo:27017/
+      - MONGO_URI=${MONGO_URI}
       - DB_NAME=dev
     depends_on:
-      - mongo
       - rabbitmq
 
   subscriber:
@@ -30,24 +29,7 @@ services:
       - NODE_ENV=development
       - JWT_SECRET=J83NDY5QuFpeurg6bK3112pW1laahA
     depends_on:
-      - mongo
       - rabbitmq
-
-  mongo:
-    image: mongo:6.0
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=pass
-    volumes:
-      - mongo-data:/data/db
-    healthcheck:
-      test: ["CMD", "mongo", "admin", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -59,5 +41,4 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
-  mongo-data:
   rabbitmq_data:
